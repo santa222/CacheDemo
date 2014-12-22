@@ -1,11 +1,10 @@
 package com.test.mytest;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.http.AndroidHttpClient;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.LruCache;
+import android.util.Log;
 
 import com.android.volley.Cache;
 import com.android.volley.Network;
@@ -72,12 +71,14 @@ public class RequestQueueSingleton {
             // Activity or BroadcastReceiver if someone passes one in.
             mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
         }
-        VollyRequest.setRequestQueue(mRequestQueue);
+        VollyRequestController.setRequestQueue(mRequestQueue);
         return mRequestQueue;
     }
 
     public <T> void addToRequestQueue(Request<T> req) {
         getRequestQueue().add(req);
+        Log.v("222", "added to queue");
+
     }
 
     public ImageLoader getImageLoader() {
@@ -95,6 +96,18 @@ public class RequestQueueSingleton {
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(tag);
         }
+    }
+
+
+    public void invalidateCache(String url){
+        mRequestQueue.getCache().invalidate(url, true);
+    }
+
+    public void clearAllCache(){
+        mRequestQueue.getCache().clear();
+    }
+    public void clearParticularCache(String url){
+        mRequestQueue.getCache().remove(url);
     }
 
 }
