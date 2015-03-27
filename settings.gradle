@@ -1,4 +1,4 @@
-include ':app', ':Volley'
+include ':app', ':Volley', ':MatchView'
 project (':Volley').projectDir = new File('Volley')
-
+project (':MatchView').projectDir = new File('MatchView')
 

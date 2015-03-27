@@ -24,6 +24,8 @@ public class MainActivity extends ActionBarActivity {
     private RequestQueue mRequestQueue;
 
 
+ //   MatchTextView mMatchTextView;
+
     /**
      * Volley decides whether to cache response or not based only on headers
      * "Cache-Control" and then "Expires", "maxAge".
@@ -64,6 +66,9 @@ public class MainActivity extends ActionBarActivity {
                 VollyRequestUtils.makeStringRequest(Request.Method.GET, jsonArrayTestUrl, makeCustomParams(), successListener, errorListener);
             }
         });
+
+      /*  mMatchTextView=(MatchTextView)findViewById(R.id.match_text);
+        playAnimation(40);*/
     }
 
     //set the params(put or post)
@@ -73,7 +78,13 @@ public class MainActivity extends ActionBarActivity {
         map.put("params2", "value2");*/
         return map;
     }
+/*
 
+    private void playAnimation(int progress){
+        mMatchTextView.setProgress(progress * 1f / 100);
+    }
+
+*/
 
 
     @Override
