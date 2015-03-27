@@ -1,4 +1,4 @@
-package com.test.mytest;
+package com.test.mytest.network;
 
 import android.graphics.Bitmap;
 import android.util.LruCache;

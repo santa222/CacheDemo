@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.test.mytest;
+package com.test.mytest.network.request;
 
 import android.util.Log;
 
@@ -69,7 +69,7 @@ public class VolleyRequest extends Request<String> {
     @Override
     protected Response<String> parseNetworkResponse(NetworkResponse response) {
         String parsed=null;
-        Log.v("222","response etag: "+response.headers.get("ETag"));
+        //Log.v("222","response etag: "+response.headers.get("ETag"));
         Log.v("222","statuscode: "+response.statusCode);
         if(response.statusCode== HttpStatus.SC_NOT_MODIFIED){
             try {
@@ -86,6 +86,21 @@ public class VolleyRequest extends Request<String> {
         }
         return Response.success(parsed, HttpHeaderParser.parseCacheHeaders(response));
     }
+
+/*
+
+    @Override
+    protected Response<T> parseNetworkResponse( NetworkResponse response) {
+        try {
+            String json = new String(response.data,HttpHeaderParser.parseCharset(response.headers));
+
+            return Response.success(gson.fromJson(json, clazz),
+                    HttpHeaderParser.parseCacheHeaders(response));
+        }
+        // handle errors
+        ...
+    }
+*/
 
 
     /**

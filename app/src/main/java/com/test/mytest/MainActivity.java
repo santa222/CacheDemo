@@ -9,8 +9,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-
-import org.apache.http.entity.StringEntity;
+import com.test.mytest.network.RequestQueueSingleton;
+import com.test.mytest.network.VollyRequestUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,6 @@ import java.util.Map;
 
 public class MainActivity extends ActionBarActivity {
     //private static String testUrl="https://edgepeek.com/categories.json";//contain the header
-    private static String testUrl="http://www.trinea.cn/test-for-http-cache.html";
     private static String jsonArrayTestUrl="http://api.androidhive.info/volley/person_array.json";//not contain the header
     private static String jsonObjectTestUrl="http://api.androidhive.info/volley/person_object.json";
 
@@ -38,7 +37,7 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public void onResponse(String response) {
             Log.d("TAG", response);
-            Log.d("TAG", "getResponseSuccess");
+            Log.d("222", "getResponseSuccess");
         }
     };
     Response.ErrorListener errorListener=new Response.ErrorListener() {
@@ -54,17 +53,15 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        VollyRequestController.setIsCache(isCache);
+        VollyRequestUtils.setIsCache(isCache);
 
-        //mRequestQueue = Volley.newRequestQueue(this);//this is a basic way
-        mRequestQueue = RequestQueueSingleton.getInstance(this.getApplicationContext()).
-                getRequestQueue();
-        RequestQueueSingleton.getInstance(this.getApplicationContext()).clearAllCache();
+        mRequestQueue = VollyRequestUtils.getRequestQueue();
+        VollyRequestUtils.clearAllCache();
 
         findViewById(R.id.send_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VollyRequestController.getInstance().makeStringRequest(Request.Method.GET,testUrl,makeCustomParams(),successListener,errorListener);
+                VollyRequestUtils.makeStringRequest(Request.Method.GET, jsonArrayTestUrl, makeCustomParams(), successListener, errorListener);
             }
         });
     }

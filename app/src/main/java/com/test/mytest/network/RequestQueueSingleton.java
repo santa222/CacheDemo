@@ -1,6 +1,8 @@
-package com.test.mytest;
+package com.test.mytest.network;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.http.AndroidHttpClient;
 import android.os.Build;
 import android.text.TextUtils;
@@ -45,6 +47,15 @@ public class RequestQueueSingleton {
 
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
+            try {
+                String packageName = mCtx.getPackageName();
+                PackageInfo info = mCtx.getPackageManager().getPackageInfo(packageName, 0);
+                userAgent = packageName + "/" + info.versionCode;
+            } catch (PackageManager.NameNotFoundException e) {
+            }
+
+
+
             HttpStack stack;
             // If the device is running a version >= Gingerbread...
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
@@ -71,43 +82,15 @@ public class RequestQueueSingleton {
             // Activity or BroadcastReceiver if someone passes one in.
             mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
         }
-        VollyRequestController.setRequestQueue(mRequestQueue);
+        //VollyRequestUtils.setRequestQueue(mRequestQueue);==============
         return mRequestQueue;
     }
 
-    public <T> void addToRequestQueue(Request<T> req) {
-        getRequestQueue().add(req);
-        Log.v("222", "added to queue");
-
-    }
 
     public ImageLoader getImageLoader() {
         return mImageLoader;
     }
 
 
-    public <T> void addToRequestQueue(Request<T> req, String tag) {
-        // set the default tag if tag is empty
-        req.setTag(TextUtils.isEmpty(tag) ? null : tag);
-        getRequestQueue().add(req);
-    }
-
-    public void cancelPendingRequests(Object tag) {
-        if (mRequestQueue != null) {
-            mRequestQueue.cancelAll(tag);
-        }
-    }
-
-
-    public void invalidateCache(String url){
-        mRequestQueue.getCache().invalidate(url, true);
-    }
-
-    public void clearAllCache(){
-        mRequestQueue.getCache().clear();
-    }
-    public void clearParticularCache(String url){
-        mRequestQueue.getCache().remove(url);
-    }
 
 }
